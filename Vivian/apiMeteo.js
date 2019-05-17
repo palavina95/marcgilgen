@@ -46,8 +46,6 @@ function showMeteo(position) {
                 var thisTempMax = data["main"]["temp_min"] - 271,Float32Array;//temp_min
                 var thisTempMin = data["main"]["temp_max"] - 271,Float32Array;//temp_max
                 var thisWind = data["wind"]["speed"];//wind_speed
-                var thisSunrise = data["sys"]["sunrise"];//sunrise
-                var thisSunset = data["sys"]["sunset"];//sunset
 
                 var temp = thisTemp.toFixed(2);
                 var tempMax = thisTempMax.toFixed(2);
@@ -60,8 +58,6 @@ function showMeteo(position) {
                 document.getElementById("temp_max").append(tempMax);// plus NPA entre ()
                 document.getElementById("temp_min").append(tempMin);
                 document.getElementById("wind").append(thisWind);
-                document.getElementById("sunrise").append(thisSunrise);
-                document.getElementById("sunset").append(thisSunset);
 
             }
         });
