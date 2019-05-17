@@ -42,19 +42,23 @@ function showMeteo(position) {
                 console.log(data);
                 var thisHumidity = data["main"]["humidity"];//humidity
                 var thisPressure = data["main"]["pressure"];//pressure
-                var thisTemp = data["main"]["temp"];//temp
-                var thisTempMax = data["main"]["temp_min"];//temp_min
-                var thisTempMin = data["main"]["temp_max"];//temp_max
+                var thisTemp = data["main"]["temp"] - 271,Float32Array;//temp
+                var thisTempMax = data["main"]["temp_min"] - 271,Float32Array;//temp_min
+                var thisTempMin = data["main"]["temp_max"] - 271,Float32Array;//temp_max
                 var thisWind = data["wind"]["speed"];//wind_speed
                 var thisSunrise = data["sys"]["sunrise"];//sunrise
                 var thisSunset = data["sys"]["sunset"];//sunset
 
+                var temp = thisTemp.toFixed(2);
+                var tempMax = thisTempMax.toFixed(2);
+                var tempMin = thisTempMin.toFixed(2);
+
                 /*Mise en forme*/
                 document.getElementById("humidite").append(thisHumidity);
                 document.getElementById("pression").append(thisPressure);
-                document.getElementById("temp").append(thisTemp);
-                document.getElementById("temp_max").append(thisTempMax);// plus NPA entre ()
-                document.getElementById("temp_min").append(thisTempMin);
+                document.getElementById("temp").append(temp);
+                document.getElementById("temp_max").append(tempMax);// plus NPA entre ()
+                document.getElementById("temp_min").append(tempMin);
                 document.getElementById("wind").append(thisWind);
                 document.getElementById("sunrise").append(thisSunrise);
                 document.getElementById("sunset").append(thisSunset);
