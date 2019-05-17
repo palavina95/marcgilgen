@@ -60,9 +60,31 @@ function showPosition(position) {
                 var thisNPA = data["results"]["0"]["locations"]["0"]["postalCode"];//npa
                 var thisService = data["info"]["copyright"]["text"];//name service
 
+                function convertLatLng(lat,long){
+                                // =>deg = 3600 * seconde
+                                lat = lat * 3600;
+                                long = long * 3600;
+
+                                // latitude:  φ =>lat  ( φ' =>lat2)
+                                lat2 = (lat - 169028.66)/10000;
+
+                                // longitude:  λ =>long  ( λ' =>long2)
+                                long2 = (long - 26782.5)/10000;
+
+                                var y = 600072.37 + (211455.93 * long2) - (10938.51 * long2 * lat2) - (0.36 * long2 * (lat2*lat2)) - (44.54 * (long2*long2*long2));
+                                y = Math.round(y);
+
+                                var x = 200147.07 + (308807.95 * lat2) + (3745.25 * long2*long2) + (76.63 * lat2*lat2) - (194.56 * long2*long2 * lat2) + (119.79 * lat2*lat2*lat2);
+                                x = Math.round(x);
+
+                                return [y,x];  // 600000,200000
+                            }
+
+                var getSwissValue = convertLatLng(thisLatitude, thisLongitude);
+
                 /*Mise en forme*/
-                document.getElementById("latitude").append(thisLatitude);
-                document.getElementById("longitude").append(thisLongitude);
+                document.getElementById("latitude").append(thisLatitude+" | CH1903: "+getSwissValue[0]);
+                document.getElementById("longitude").append(thisLongitude+" | CH1903: "+getSwissValue[1]);
                 document.getElementById("canton").append(thisCanton);
                 document.getElementById("commune").append(thisCommune);// plus NPA entre ()
                 document.getElementById("commune").append("("+thisNPA+")");
@@ -141,9 +163,33 @@ window.onload = function() {
                             var thisNPA = data["results"]["0"]["locations"]["0"]["postalCode"];//npa
                             var thisService = data["info"]["copyright"]["text"];//name service
 
+                            function convertLatLng(lat,long){
+                                // =>deg = 3600 * seconde
+                                lat = lat * 3600;
+                                long = long * 3600;
+
+                                // latitude:  φ =>lat  ( φ' =>lat2)
+                                lat2 = (lat - 169028.66)/10000;
+
+                                // longitude:  λ =>long  ( λ' =>long2)
+                                long2 = (long - 26782.5)/10000;
+
+                                var y = 600072.37 + (211455.93 * long2) - (10938.51 * long2 * lat2) - (0.36 * long2 * (lat2*lat2)) - (44.54 * (long2*long2*long2));
+                                y = Math.round(y);
+
+                                var x = 200147.07 + (308807.95 * lat2) + (3745.25 * long2*long2) + (76.63 * lat2*lat2) - (194.56 * long2*long2 * lat2) + (119.79 * lat2*lat2*lat2);
+                                x = Math.round(x);
+
+                                return [y,x];  // 600000,200000
+                            }
+
+                            var getSwissValue = convertLatLng(thisLatitude, thisLongitude);
+
+                            console.log(getSwissValue);
+
                             /*Mise en forme*/
-                            document.getElementById("latitude").innerHTML = "Latitude : "+thisLatitude;
-                            document.getElementById("longitude").innerHTML = "Longitude : "+thisLongitude;
+                            document.getElementById("latitude").innerHTML = "Latitude : "+thisLatitude+" | CH1903: "+getSwissValue[0];
+                            document.getElementById("longitude").innerHTML = "Longitude : "+thisLongitude+" | CH1903: "+getSwissValue[1];
                             document.getElementById("canton").innerHTML = "Canton : "+thisCanton;
                             document.getElementById("commune").innerHTML = "Commune(NPA) : "+thisCommune+"("+thisNPA+")";
                             document.getElementById("service").innerHTML = "Service : "+thisService;
@@ -151,7 +197,6 @@ window.onload = function() {
 
                             var thisGeoUser = data["results"]["0"]["locations"]["0"]["adminArea5"]+"-"+data["results"]["0"]["locations"]["0"]["adminArea1"];
                             localStorage.setItem("geoUserMemo", JSON.stringify(thisGeoUser));
-                            //localStorage.setItem("generalInformation", JSON.stringify(generalInfos));
 
                         }
                     });
