@@ -1,19 +1,16 @@
 /*Geolocation part*/
 var geoUser = "";
-var latitude = "";
-var longitude = ""
-;
+var generalInformation = "";
+
+
 if (localStorage.getItem("geoUserMemo") === null) { //if palmares is null we create it
         localStorage.setItem("geoUserMemo", JSON.stringify(geoUser));
 }
 
-if (localStorage.getItem("userLatitude") === null) { //if palmares is null we create it
-        localStorage.setItem("userLatitude", JSON.stringify(latitude));
+if (localStorage.getItem("generalInformation") === null) { //if palmares is null we create it
+        localStorage.setItem("generalInformation", JSON.stringify(generalInformation));
 }
 
-if (localStorage.getItem("userLongitude") === null) { //if palmares is null we create it
-        localStorage.setItem("userLongitude", JSON.stringify(longitude));
-}
 
 function getLocation() {
   if (navigator.geolocation) {
@@ -45,8 +42,27 @@ function showPosition(position) {
             if(err !== null){
                 alert('Something went wrong: ' + err);
             } else {
+                console.log(data);
+                var thisLatitude = data["results"]["0"]["locations"]["0"]["latLng"]["lat"]; //Latitude
+                var thisLongitude = data["results"]["0"]["locations"]["0"]["latLng"]["lng"];//longitude
+                var thisCanton = data["results"]["0"]["locations"]["0"]["adminArea3"];//canton
+                var thisCommune = data["results"]["0"]["locations"]["0"]["adminArea5"];//commune
+                var thisNPA = data["results"]["0"]["locations"]["0"]["postalCode"];//npa
+                var thisService = data["info"]["copyright"]["text"];//name service
+
+                /*Mise en forme*/
+                document.getElementById("latitude").append(thisLatitude);
+                document.getElementById("longitude").append(thisLongitude);
+                document.getElementById("canton").append(thisCanton);
+                document.getElementById("commune").append(thisCommune);// plus NPA entre ()
+                document.getElementById("commune").append("("+thisNPA+")");
+                document.getElementById("service").append(thisService);
+
+
                 var thisGeoUser = data["results"]["0"]["locations"]["0"]["adminArea5"]+"-"+data["results"]["0"]["locations"]["0"]["adminArea1"];
                 localStorage.setItem("geoUserMemo", JSON.stringify(thisGeoUser));
+                //localStorage.setItem("generalInformation", JSON.stringify(generalInfos));
+
             }
         });
 
@@ -63,7 +79,6 @@ geoUser = geoUser.slice(0,-1); //Delete last character
 latitude = localStorage.getItem("userLatitude");
 longitude = localStorage.getItem("userLongitude");
 
-console.log("latitude: "+latitude+"|longitude: "+longitude);
 
 
 /*End geolocations part*/
@@ -81,8 +96,5 @@ window.onload = function() {
           draggable: true
         }).bindPopup('Hackaton').addTo(map);
 
-
-        document.getElementById("valueLatitude").innerHTML = latitude;
-        document.getElementById("valueLongitude").innerHTML = longitude;
 
       }

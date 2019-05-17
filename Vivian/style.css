@@ -5,6 +5,10 @@
     align-content: center;
 }
 
+#map{
+    height: 300px !important;
+}
+
 
 
 .accordion:after {
